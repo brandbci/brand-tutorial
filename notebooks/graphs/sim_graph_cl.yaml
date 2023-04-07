@@ -22,43 +22,6 @@ nodes:
       syncbox: false
       center_mark: false
 
-  - name: auto_cue
-    nickname: auto_cue
-    module: ../brand-modules/cursor-control
-    run_priority: 99
-    parameters:
-      # logging level for the process
-      log: INFO
-      sync_key: sync
-      time_key: ts
-      # in/out stream info
-      input_stream: binned_spikes
-      input_rate: 100
-      output_stream: control
-      output_vect_name: samples
-      # target info
-      target_stream: targetData
-      target_list: ["X", "Y"]
-      target_dtype: float32
-      target_on_off: state
-      target_state_dtype: int32
-      target_off_center: False
-      target_move_state: 2
-      # movement info
-      move_stream: cursorData
-      move_list: ["X", "Y"]
-      move_list_len: 2
-      move_dtype: float32
-      speed: 266
-      # velocity profile info
-      vel_profile: gaussian
-      vel_output: True
-      error_thres: 0.5
-      min_speed: 0.01
-      # movement trigger info
-      triggered: false
-      trigger_stream: move_trigger
-
   - name: radialFSM
     nickname: radial_fsm
     module: ../brand-modules/cursor-control
@@ -108,10 +71,8 @@ nodes:
 
   - name: wiener_filter
     nickname: wiener_filter
-    machine: brand
-    module: ../brand-modules/brand-emory
+    module: ../brand-modules/cursor-control
     run_priority: 99
-    cpu_affinity: 12-13
     parameters:
       # logging level for the process
       log: INFO

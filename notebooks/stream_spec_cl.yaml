@@ -4,7 +4,7 @@ mouse_vel:
 firing_rates:
   i: uint32
   ts: uint64
-# BRAND
+# BRAND  
 # bin_multiple
 binned_spikes:
   sync: sync
@@ -15,10 +15,10 @@ normalize_norm:
   sync: sync
   ts: uint64
   samples: int8
-# auto_cue
-control:
+# decoder
+wiener_filter:
   ts: uint64
-  # i: uint64
+  i: uint64
   samples: float32
   sync: sync
 # decoder_smoothing
