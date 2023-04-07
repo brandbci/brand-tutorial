@@ -1,0 +1,159 @@
+
+# radial task FSM
+# Authors: Yahia Ali, Mattia Rigotti, Kevin Bodkin
+
+RedisStreams:
+  Inputs:
+    #
+  Outputs:
+    cursorData:
+      enable_nwb:           True
+      type_nwb:             Position
+      X:
+        chan_per_stream:    1
+        samp_per_stream:    1
+        sample_type:        float32
+        nwb:
+          reference_frame:  screen center
+          unit:             pixels
+          resolution:       1.0
+          description:      x cursor position
+      Y:
+        chan_per_stream:    1
+        samp_per_stream:    1
+        sample_type:        float32
+        nwb:
+          reference_frame:  screen center
+          unit:             pixels
+          resolution:       1.0
+          description:      y cursor position
+      radius:
+        chan_per_stream:    1
+        samp_per_stream:    1
+        sample_type:        float32
+        nwb:
+          reference_frame:  cursor center
+          unit:             pixels
+          description:      cursor radius
+      state:
+        chan_per_stream:    1
+        samp_per_stream:    1
+        sample_type:        int32
+        nwb:
+          reference_frame:  cursor click
+          description:      cursor click
+    targetData:
+      enable_nwb:           True
+      type_nwb:             Position
+      X:
+        chan_per_stream:    1
+        samp_per_stream:    1
+        sample_type:        float32
+        nwb:
+          reference_frame:  screen center
+          unit:             pixels
+          resolution:       1.0
+          description:      x target position
+      Y:
+        chan_per_stream:    1
+        samp_per_stream:    1
+        sample_type:        float32
+        nwb:
+          reference_frame:  screen center
+          unit:             pixels
+          resolution:       1.0
+          description:      y target position
+      radius:
+        chan_per_stream:    1
+        samp_per_stream:    1
+        sample_type:        float32
+        nwb:
+          reference_frame:  target center
+          unit:             pixels
+          description:      target radius
+      state:
+        chan_per_stream:    1
+        samp_per_stream:    1
+        sample_type:        int32
+        nwb:
+          reference_frame:  target visual state
+          description:      0=not shown, 1=yellow, 2=green, 3=red
+    state:
+      enable_nwb:           True
+      type_nwb:             Trial
+      state:
+        chan_per_stream:    1
+        samp_per_stream:    1
+        sample_type:        str
+        nwb:
+          trial_state:            'state'
+          start_trial_indicators: ['start_time']
+          end_trial_indicators:   ['end_time']
+          other_trial_indicators: ['go_cue_time']
+          go_cue_time_description:   'Time of go cue onset'
+    trial_success:
+      enable_nwb:             True
+      type_nwb:               TrialInfo
+      success:
+        chan_per_stream:      1
+        samp_per_stream:      1
+        sample_type:          bool
+        nwb:
+          description:        A boolean indicator of whether the trial's target was acquired successfully
+    trial_info:
+      enable_nwb:             True
+      type_nwb:               TrialInfo
+      target_X:
+        chan_per_stream:      1
+        samp_per_stream:      1
+        sample_type:          float32
+        nwb:
+          description:        Target X position for trial 
+      target_Y:
+        chan_per_stream:      1
+        samp_per_stream:      1
+        sample_type:          float32
+        nwb:
+          description:        Target Y position for trial 
+      # reach_angle:
+      #   chan_per_stream:      1
+      #   samp_per_stream:      1
+      #   sample_type:          float32
+      #   nwb:
+      #     description:        Reach angle for trial       
+      start_X:
+        chan_per_stream:      1
+        samp_per_stream:      1
+        sample_type:          float32
+        nwb:
+          description:        Position X of start target for trial    
+      start_Y:
+        chan_per_stream:      1
+        samp_per_stream:      1
+        sample_type:          float32
+        nwb:
+          description:        Position Y of start target for trial  
+      cond_id:
+        chan_per_stream:      1
+        samp_per_stream:      1
+        sample_type:          str
+        nwb:
+          description:        Target condition ID for trial
+      target_radius:
+        chan_per_stream:      1
+        samp_per_stream:      1
+        sample_type:          float32
+        nwb:
+          description:        Target radius in pixels for trial 
+      cursor_radius:
+        chan_per_stream:      1
+        samp_per_stream:      1
+        sample_type:          float32
+        nwb:
+          description:        Cursor radius in pixels for trial 
+      dwell_time:
+        chan_per_stream:      1
+        samp_per_stream:      1
+        sample_type:          float32
+        nwb:
+          description:        Hold time over target for trial 

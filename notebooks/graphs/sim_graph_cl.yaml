@@ -1,0 +1,209 @@
+participant_id: sim
+graph_name: bci_control_sim
+session_description: 
+
+# graph parameters
+parameters:
+  total_channels: &total_channels 192
+
+# node-specific parameters
+nodes:
+  - name: pyglet_display
+    nickname: pyglet_display
+    module: ../brand-modules/cursor-control
+    run_priority: 99
+    parameters:
+      # logging level for the process
+      log: INFO
+      # whether to make the game fullscreen
+      fullscreen: True
+      window_width: 1920
+      window_height: 1080
+      syncbox: false
+      center_mark: false
+
+  - name: auto_cue
+    nickname: auto_cue
+    module: ../brand-modules/cursor-control
+    run_priority: 99
+    parameters:
+      # logging level for the process
+      log: INFO
+      sync_key: sync
+      time_key: ts
+      # in/out stream info
+      input_stream: binned_spikes
+      input_rate: 100
+      output_stream: control
+      output_vect_name: samples
+      # target info
+      target_stream: targetData
+      target_list: ["X", "Y"]
+      target_dtype: float32
+      target_on_off: state
+      target_state_dtype: int32
+      target_off_center: False
+      target_move_state: 2
+      # movement info
+      move_stream: cursorData
+      move_list: ["X", "Y"]
+      move_list_len: 2
+      move_dtype: float32
+      speed: 266
+      # velocity profile info
+      vel_profile: gaussian
+      vel_output: True
+      error_thres: 0.5
+      min_speed: 0.01
+      # movement trigger info
+      triggered: false
+      trigger_stream: move_trigger
+
+  - name: radialFSM
+    nickname: radial_fsm
+    module: ../brand-modules/cursor-control
+    run_priority: 99
+    parameters:
+      # logging level for the process
+      log: INFO
+      sync_key: sync
+      time_key: ts
+      # target info
+      target_angles: [0, 45, 90, 135, 180, 225, 270, 315]
+      target_diameter: 80
+      distance_from_center: 400
+      recenter: False
+      recenter_on_fail: True
+      # cursor settings
+      cursor_radius: 25 # radius
+      # timing information
+      initial_wait_time: 5
+      # how long should we wait between trials?
+      inter_trial_time_in:
+        max: 0
+        min: 0
+      inter_trial_time_out:
+        max: 0
+        min: 0
+      inter_trial_time_failure:
+        max: 1.0
+        min: 1.0
+      # time range to be inside of the target
+      delay_time_in:
+        max: 0
+        min: 0
+      delay_time_out:
+        max: 0
+        min: 0
+      # time range to be inside of the target
+      target_hold_time_in:
+        max: 1.0
+        min: 1.0
+      target_hold_time_out:
+        max: 1.0
+        min: 1.0
+      # signal input information
+      input_stream: wiener_filter
+      input_dtype: float32
+
+  - name: wiener_filter
+    nickname: wiener_filter
+    machine: brand
+    module: ../brand-modules/brand-emory
+    run_priority: 99
+    cpu_affinity: 12-13
+    parameters:
+      # logging level for the process
+      log: INFO
+      # Number of targets the wiener_filter should predict
+      # e.g. n_targets=2 for decoding x and y channels
+      n_targets: 2
+      # Number of features to use for decoding
+      n_features: *total_channels
+      # Type of wiener_filter to use
+      decoder_type: linear
+      # path to the saved model
+      model_path: ~
+      # sequence length for the Wiener filter
+      seq_len: 1
+      # input stream
+      input_stream: binned_spikes
+      input_field: samples
+      input_dtype: int8
+      # output stream
+      output_stream: wiener_filter
+      output_field: samples
+      output_dtype: float32
+
+  - name: bin_multiple
+    nickname: bin_multiple
+    module: ../brand-modules/cursor-control
+    run_priority: 99
+    parameters:
+      chan_per_stream: *total_channels
+      total_channels: *total_channels
+      bin_size: 10
+      log: INFO
+      input_streams: [threshold_values]
+      input_field: thresholds
+      input_dtype: int8
+      output_stream: binned_spikes
+      sync_field: ~
+
+  - name:             thresholds_udp
+    nickname:         thresholds_udp
+    module:           ../brand-modules/brand-simulator
+    run_priority:     99
+    parameters:
+        # logging level for the process
+        log: INFO
+        # Sample rate (Hz) of firing rate data
+        fr_sample_rate: 200
+        # Sample rate (Hz) to use when use_timer=false
+        sample_rate: 1000
+        # random seed
+        random_seed: 42
+        # Output data stream name
+        input_stream: firing_rates
+        # Output data stream name
+        output_stream: threshold_values
+        # Number of simulated neurons
+        n_neurons: *total_channels
+        # Max # of samples to store in Redis
+        max_samples: 300000
+        # UDP config 
+        udp_ip:             127.0.0.1 # send to brand machine ip address
+        udp_port:           50114
+        udp_interface:      null
+  
+  - name: sim2D
+    nickname: sim2D
+    module: ../brand-modules/brand-simulator
+    run_priority: 99
+    parameters:
+      # logging level for the process
+      log: INFO
+      # Number of neurons to simulate
+      n_neurons: *total_channels
+      # Max. mouse velocity for normalization
+      max_v: 25.0
+      # Stream to use as input
+      in_stream: mouse_vel
+      # Max # of samples to store in Redis
+      max_samples: 6000
+
+  - name: mouseAdapter
+    nickname: mouseAdapterSim
+    module: ../brand-modules/brand-simulator
+    run_priority: 99
+    parameters:
+      # Logging level for the process
+      log: INFO
+      # Number of samples we're expecting to see per Redis stream entry
+      samples_per_redis_stream: 1
+      # Sample rate in Hz
+      sample_rate: 200
+      # Mouse device ID
+      mouse_device: /dev/input/by-id/usb-Razer_Razer_Viper-event-mouse
+      # Max number of samples to store in Redis
+      max_samples: 600000

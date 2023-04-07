@@ -1,0 +1,16 @@
+
+metadata:
+  description: Display for 2D task
+  author: Yahia Ali, adapted for supervisor by Mattia Rigotti
+
+parameters:
+  - type: bool
+    name: fullscreen
+    label: Enable fullscreen for display 
+    static: True
+    mustExist: True
+  - type: string
+    name: log
+    label: Logging info
+    static: True
+    mustExist: True

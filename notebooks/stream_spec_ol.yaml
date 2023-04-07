@@ -1,0 +1,70 @@
+# SIMULATOR
+mouse_vel:
+  index: int32
+firing_rates:
+  i: uint32
+  ts: uint64
+cb_gen_1: &cb_gen
+  timestamps: timespec
+cb_gen_2: *cb_gen
+# BRAND  
+# cerebusAdapter
+nsp_neural_1: &nsp_neural
+  timestamps: uint32
+  BRANDS_time: timespec
+  udp_recv_time: timeval
+  samples: int16
+nsp_neural_2: *nsp_neural
+# thresholdExtraction
+thresh_cross_1: &thresh_cross
+  sync: sync
+  ts: uint64
+  crossings: int16
+thresh_cross_2: *thresh_cross
+# bin_multiple
+binned_spikes:
+  sync: sync
+  ts: uint64
+  samples: int8
+# normalize
+normalize_norm:
+  sync: sync
+  ts: uint64
+  samples: int8
+# auto_cue
+control:
+  ts: uint64
+  # i: uint64
+  samples: float32
+  sync: sync
+# decoder_smoothing
+cursor_vel:
+  sync: sync
+  ts: uint64
+  samples: float32
+# radialFSM
+targetData:
+  X: float32
+  Y: float32
+  height: float32
+  # i: uint32
+  state: int32
+  sync: sync
+  ts: uint64
+  width: float32
+cursorData:
+  X: float32
+  Y: float32
+  radius: float32
+  # i: str
+  state: int32
+  sync: sync
+  ts: uint64
+state:
+  ts: uint64
+  sync: sync
+  state: str
+trial_success:
+  ts: uint64
+  sync: sync
+  success: uint8

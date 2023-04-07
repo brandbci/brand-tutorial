@@ -1,0 +1,19 @@
+
+metadata:
+  description: Auto cue cursor control for 2D task 
+  author: Mattia Rigotti, based on code from Yahia Ali
+
+RedisStreams:
+  Inputs:
+      ### what should be put in here?
+  Outputs:
+    control_vec:
+      enable_nwb:           True
+      type_nwb:             TimeSeries
+      samples:
+        chan_per_stream:    $move_list_len
+        samp_per_stream:    1
+        sample_type:        $move_dtype
+        nwb:
+          unit:             arbitrary units
+          description:      control output

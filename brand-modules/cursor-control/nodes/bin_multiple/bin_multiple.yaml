@@ -1,0 +1,30 @@
+###########################################
+# stream definitions
+# expected format:
+#
+#   streamName:
+#     enable_nwb:             [required if output stream]
+#     type_nwb:               [required if output stream]
+#     keyName:
+#       chan_per_stream:      [required]
+#       samp_per_stream:      [required]
+#       sample_type:          [required]
+#       nwb:
+#         <nwb_parameters>:   [optional]
+#       <additional_params>:  [optional]
+###########################################
+
+RedisStreams:
+  Inputs:
+      ### what should be put in here?
+  Outputs:
+    binned_spikes:
+      enable_nwb:           True
+      type_nwb:             TimeSeries
+      samples:
+        chan_per_stream:    $total_channels
+        samp_per_stream:    1
+        sample_type:        int8
+        nwb:
+          unit:             spikes
+          description:      spike counts

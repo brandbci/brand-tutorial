@@ -1,0 +1,19 @@
+
+metadata:
+  description: ...
+  author: ...
+
+RedisStreams:
+  Inputs:
+      ### what should be put in here?
+  Outputs:
+    control_vec:
+      enable_nwb:           True
+      type_nwb:             TimeSeries
+      samples:
+        chan_per_stream:    $n_targets
+        samp_per_stream:    1
+        sample_type:        $output_dtype
+        nwb:
+          unit:             arbitrary units
+          description:      control output
