@@ -8,19 +8,22 @@ parameters:
 
 # node-specific parameters
 nodes:
-  - name: pyglet_display
-    nickname: pyglet_display
+  - name: display_centerOut
+    nickname: display_centerOut
     module: ../brand-modules/cursor-control
     run_priority: 99
     parameters:
       # logging level for the process
       log: INFO
-      # whether to make the game fullscreen
-      fullscreen: True
+      sync_key: sync
+      time_key: ts
+      # window dimensions
       window_width: 1920
       window_height: 1080
+      # whether to make the game fullscreen
+      fullscreen: true
+      # whether to have syncbox
       syncbox: false
-      center_mark: false
 
   - name: auto_cue
     nickname: auto_cue

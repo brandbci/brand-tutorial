@@ -3,3 +3,6 @@
 
 # data
 data/
+
+# Git
+git_hash.o

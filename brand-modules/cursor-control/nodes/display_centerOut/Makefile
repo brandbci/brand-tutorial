@@ -1,4 +1,4 @@
-PROJECT=pyglet_display
+PROJECT=display_centerOut
 
 ifneq ($(CONDA_DEFAULT_ENV),rt)
 $(error real-time conda env (rt) not active)

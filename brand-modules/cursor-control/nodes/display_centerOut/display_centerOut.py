@@ -1,11 +1,12 @@
 #!/usr/bin/env python
 import gc
 import logging
-import os
 import time
+import os
+import sys
 from struct import unpack
-import numpy as np
 
+import numpy as np
 import pyglet
 from brand import BRANDNode
 
@@ -22,6 +23,12 @@ STATE_BETWEEN_TRIALS = 0
 STATE_START_TRIAL = 1
 STATE_MOVEMENT = 2
 
+try:
+    with open(os.path.join(os.path.expanduser('~'), '.DISPLAY'), 'r') as f:
+        os.environ["DISPLAY"] = f.read().splitlines()[0]
+except FileNotFoundError:
+    logging.error('No display found, exiting')
+    sys.exit(1)
 
 class PygletDisplay(BRANDNode):
 
@@ -31,11 +38,9 @@ class PygletDisplay(BRANDNode):
 
         # initialize parameters
         self.fullscreen = self.parameters['fullscreen']
-
         self.window_width = self.parameters['window_width']
         self.window_height = self.parameters['window_height']
         self.syncbox_enable = self.parameters['syncbox']
-        self.center_mark_enable = self.parameters['center_mark']
 
         # window setup
         self.window = pyglet.window.Window(width=self.window_width,
@@ -55,30 +60,13 @@ class PygletDisplay(BRANDNode):
         self.background = pyglet.graphics.OrderedGroup(0)
         self.foreground = pyglet.graphics.OrderedGroup(1)
 
-        # center
-        self.center_mark = pyglet.shapes.BorderedRectangle(
-            x=self.x_0,
-            y=self.y_0,
-            width=100,
-            height=100,
-            color=BLACK,
-            border_color=GRAY,
-            border=4,
-            batch=self.batch,
-            group=self.background)
-        self.center_mark.anchor_x = self.center_mark.anchor_y = int(
-            self.center_mark.width / 2)
-
         # target
-        self.target = pyglet.shapes.Rectangle(x=500,
-                                              y=500,
-                                              width=100,
-                                              height=100,
-                                              color=RED,
-                                              batch=self.batch,
-                                              group=self.background)
-        self.target.anchor_x = self.target.anchor_y = int(self.target.width /
-                                                          2)
+        self.target = pyglet.shapes.Circle(x=0,
+                                           y=0,
+                                           radius=40,
+                                           color=RED,
+                                           batch=self.batch,
+                                           group=self.background)
 
         # sync box (graphical sync pulse for use with photodetector)
         self.syncbox = pyglet.shapes.Rectangle(x=0,
@@ -106,7 +94,7 @@ class PygletDisplay(BRANDNode):
         # cursor
         self.cursor = pyglet.shapes.Circle(x=0,
                                            y=0,
-                                           radius=50,
+                                           radius=25,
                                            color=WHITE,
                                            batch=self.batch,
                                            group=self.foreground)
@@ -132,9 +120,10 @@ class PygletDisplay(BRANDNode):
         ups = {
             b'X': 'f',  # x position
             b'Y': 'f',  # y position
-            b'state': 'I'  # state
+            b'radius': 'f',  # radius
+            b'state': 'i'  # state
         }
-        keys = [b'X', b'Y', b'state']
+        keys = [b'X', b'Y', b'radius', b'state']
 
         cursor_data = {}
         for key in keys:
@@ -148,11 +137,10 @@ class PygletDisplay(BRANDNode):
         ups = {
             b'X': 'f',  # x position
             b'Y': 'f',  # y position
-            b'width': 'f',  # width
-            b'height': 'f',  # height
-            b'state': 'I',  # state (hidden (0), red (1), green (2))
+            b'radius': 'f',  # width
+            b'state': 'i',  # state: hidden (0), yellow (1), green (2), red (3)
         }  # un-pack string
-        keys = [b'X', b'Y', b'width', b'height', b'state']
+        keys = [b'X', b'Y', b'radius', b'state']
 
         target_data = {}
         for key in keys:
@@ -161,19 +149,16 @@ class PygletDisplay(BRANDNode):
         return target_data
 
     # Pyglet event handlers
-    #@window.event
     def on_key_press(self, symbol, modifiers):
         if symbol == pyglet.window.key.ESCAPE:  # [ESC]
             self.window.close()
         else:
-            #self.label.text = pyglet.window.key.symbol_string(symbol)
             self.r.xadd(
                 b'keypress', {
                     b'symbol': self.label.text,
                     self.time_key: np.uint64(time.monotonic_ns()).tobytes()
                 })
 
-    #@window.event
     def draw_stuff(self, *args):
         self.window.clear()
 
@@ -206,17 +191,17 @@ class PygletDisplay(BRANDNode):
             self.target.visible = True
             self.syncbox.visible = True and self.syncbox_enable
 
-        self.center_mark.visible = self.center_mark_enable
+        #self.center_mark.visible = self.center_mark_enable
+
+        # cursor shape
+        self.cursor.radius = int(self.cdict['radius'])
 
         # target shape
-        self.target.width = int(self.tdict['width'])
-        self.target.height = int(self.tdict['height'])
-        self.target.anchor_x = int(self.target.width / 2)
-        self.target.anchor_y = int(self.target.height / 2)
+        self.target.radius = int(self.tdict['radius'])
 
         # log sync pulse state
         self.r.xadd(
-            b'sync_pulse', {
+            b'display_sync_pulse', {
                 b'state': self.tdict['state'],
                 self.time_key: np.uint64(time.monotonic_ns()).tobytes()
             })
@@ -240,7 +225,6 @@ if __name__ == "__main__":
     gc.disable()
 
     # setup
-    #logging.info(f'PID: {os.getpid()}')
     pyglet_display = PygletDisplay()
 
     # main
