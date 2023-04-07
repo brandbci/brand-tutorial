@@ -52,7 +52,7 @@ nodes:
       move_list: ["X", "Y"]
       move_list_len: 2
       move_dtype: float32
-      speed: 266
+      speed: 25
       # velocity profile info
       vel_profile: gaussian
       vel_output: True
