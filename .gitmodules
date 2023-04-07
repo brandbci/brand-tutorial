@@ -1,0 +1,10 @@
+[submodule "realtime_rig_dev"]
+	path = brand
+	url = git@github.com:snel-repo/realtime_rig_dev.git
+	branch = dev
+[submodule "brand-modules/brand-nsp"]
+	path = brand-modules/brand-nsp
+	url = git@github.com:snel-repo/brand-nsp.git
+[submodule "brand-modules/brand-simulator"]
+	path = brand-modules/brand-simulator
+	url = git@github.com:snel-repo/brand-simulator.git
