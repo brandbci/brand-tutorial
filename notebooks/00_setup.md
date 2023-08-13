@@ -24,7 +24,8 @@ We install Redis from source using the version that is pinned to the BRAND repos
 3. Grant sudo permissions to your user account
 4. Install `miniconda`
 5. Install BRAND dependencies (run [bootstrap.sh](../brand/bootstrap.sh))
-6. Compile Redis and BRAND nodes (run `make` from the `brand` directory)
+6. Run `source setup.sh` from the `brand` directory
+7. Compile Redis and BRAND nodes (run `make` from the `brand` directory)
 
 ## Running BRAND
 BRAND uses two Python scripts to launch and manage processes: [supervisor](../brand/lib/python/brand/supervisor.py) and [booter](../brand/lib/python/brand/booter.py). `supervisor` is the main one, and it handles loading configuration parameters, starting Redis, and starting and stopping nodes. If you are running BRAND on just one machine, you will only need to use `supervisor`. If you want to run BRAND nodes on several machines at a time, you will run `supervisor` on the "host" machine that contains the Redis database and run `booter` on any other "client" machines that will be running nodes.
