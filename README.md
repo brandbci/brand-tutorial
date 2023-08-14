@@ -4,7 +4,7 @@ This repository contains a brief tutorial on how to get started using BRAND. The
 1. Set up your system for BRAND by following the instructions in [00_setup.md](./notebooks/00_setup.md)
 2. Run a calibration task and train a decoder using [01_calibration.ipynb](./notebooks/01_calibration.ipynb)
 3. Run a closed-loop cursor control task with your trained decoder using [02_control.ipynb](./notebooks/02_control.ipynb)
-4. If you have multiple machines on whicn you can run BRAND, try out the multi-machine version of this task with [03_multi_machine.ipynb](./notebooks/02_multi_machine.ipynb)
+4. If you have multiple machines on whicn you can run BRAND, try out the multi-machine version of this task with [03_multi_machine.ipynb](./notebooks/03_multi_machine.ipynb)
 
 Once you have finished the above steps, you will have a working example of how to use BRAND to run an experiment.
 
