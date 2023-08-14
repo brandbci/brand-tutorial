@@ -16,14 +16,14 @@ We use [miniconda](https://docs.conda.io/en/latest/miniconda.html) for Python en
 
 The file [bootstrap.sh](https://github.com/brandbci/brand/blob/main/bootstrap.sh) installs system-level packages required by BRAND and sets up the `rt` conda enviroment. Run this after you have installed miniconda.
 
-We install Redis from source using the version that is pinned to the BRAND repository [here](https://github.com/brandbci/brand/tree/main/lib). If you have installed Redis using another method like `apt`, you may run into version incompatibility issues. To install Redis and compile BRAND nodes, run `make` from the [`brand`](../brand) directory.
+We install Redis from source using the version that is pinned to the BRAND repository [here](https://github.com/brandbci/brand/tree/main/lib). If you have installed Redis using another method like `apt`, you may run into version incompatibility issues. To install Redis and compile BRAND nodes, run `make` from the [`brand`](https://github.com/brandbci/brand) directory.
 
 ## Installation Checklist
 1. Install Ubuntu 20.04 LTS
 2. Install a fully-preemptible Linux kernel (optional)
 3. Grant sudo permissions to your user account
 4. Install `miniconda`
-5. Install BRAND dependencies (run [bootstrap.sh](../brand/bootstrap.sh))
+5. Install BRAND dependencies (run [bootstrap.sh](https://github.com/brandbci/brand/blob/main/bootstrap.sh))
 6. Run `source setup.sh` from the `brand` directory
 7. Compile Redis and BRAND nodes (run `make` from the `brand` directory)
 
