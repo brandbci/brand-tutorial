@@ -9,9 +9,9 @@ This repository contains a brief tutorial on how to get started using BRAND. The
 Once you have finished the above steps, you will have a working example of how to use BRAND to run an experiment.
 
 Next, you may want to:   
-- Learn how graphs are configured (see docs in [brand/README.md](brand/README.md) and examples in [notebooks/graphs](notebooks/graphs))
+- Learn how graphs are configured (see docs in [brand/README.md](https://github.com/brandbci/brand/blob/main/README.md) and examples in [notebooks/graphs](notebooks/graphs))
 - Write finite-state machine and graphics nodes to fit the task of your choice (see [radialFSM.py](brand-modules/cursor-control/nodes/radialFSM/radialFSM.py) and [display_centerOut.py](brand-modules/cursor-control/nodes/display_centerOut/display_centerOut.py))
 - Try out a new decoder architecture (see [wiener_filter.py](brand-modules/cursor-control/nodes/wiener_filter/wiener_filter.py))
-- Acquire data from a neural recording device like a Blackrock Neurotech Neural Signal Processor (NSP) (see [cerebusAdapter.c](brand-modules/brand-nsp/nodes/cerebusAdapter/cerebusAdapter.c))
+- Acquire data from a neural recording device like a Blackrock Neurotech Neural Signal Processor (NSP) (see [cerebusAdapter.c](https://github.com/brandbci/brand-nsp/blob/main/nodes/cerebusAdapter/cerebusAdapter.c))
 
 If you run into any issues, please document and submit them here on GitHub.
