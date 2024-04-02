@@ -39,3 +39,17 @@ To start `booter`:
 1. Log into your client machine and navigate to the `brand` directory
 2. Run `source setup.sh`
 3. Run `booter -m $MACHINE`, replacing `$MACHINE` with a unique name for each computer. Use the `-i` and `-p` options to specify a Redis IP and port that match those in the `supervisor` start command.
+
+## Configuration Tips
+### Setting the `DISPLAY` variable
+When starting graphical applications on a Linux machine, you must set the `DISPLAY` environment variable to indicate the display that you want to use. If you have started `supervisor` or `booter` from a terminal in a display manager (e.g. GNOME), then this environment variable is already set for you. You can check this by running `echo $DISPLAY`:
+```
+$ echo $DISPLAY
+:1
+```
+Otherwise, you will need to manually set the `DISPLAY` variable before starting `supervisor` or `booter`:
+```
+$ export DISPLAY=:1
+$ supervisor
+```
+To find the correct `DISPLAY` variable to use, you can log into your display manager and run `echo $DISPLAY` from a terminal. Because we need to do this often, we have automated this process by installing a script that automatically writes the `DISPLAY` variable to a file whenever a user logs in via the GNOME display manager. The `display_centerOut` node then reads from this file and sets the `DISPLAY` variable [here](../brand-modules/cursor-control/nodes/display_centerOut/display_centerOut.py#L29). If you want to use this same approach, you can install that script by running `install_get_display.sh` from the main `brand-tutorial` directory.
