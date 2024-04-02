@@ -23,12 +23,13 @@ STATE_BETWEEN_TRIALS = 0
 STATE_START_TRIAL = 1
 STATE_MOVEMENT = 2
 
-try:
-    with open(os.path.join(os.path.expanduser('~'), '.DISPLAY'), 'r') as f:
-        os.environ["DISPLAY"] = f.read().splitlines()[0]
-except FileNotFoundError:
-    logging.error('No display found, exiting')
-    sys.exit(1)
+if "DISPLAY" not in os.environ:
+    try:
+        with open(os.path.join(os.path.expanduser('~'), '.DISPLAY'), 'r') as f:
+            os.environ["DISPLAY"] = f.read().splitlines()[0]
+    except FileNotFoundError:
+        logging.error('No display found, exiting')
+        sys.exit(1)
 
 class PygletDisplay(BRANDNode):
 
