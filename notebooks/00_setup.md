@@ -23,6 +23,17 @@ We install Redis from source using the version that is pinned to the BRAND repos
 2. Install a fully-preemptible Linux kernel (optional)
 3. Grant sudo permissions to your user account
 4. Install `miniconda`
+5. Clone this repository and its submodules by running:
+```
+git clone --recurse-submodules git@github.com:brandbci/brand-tutorial.git
+```
+or 
+```
+git git@github.com:brandbci/brand-tutorial.git
+cd brand-tutorial
+git submodule update --init --recursive
+```
+
 5. Install BRAND dependencies (run [bootstrap.sh](https://github.com/brandbci/brand/blob/main/bootstrap.sh))
 6. Run `source setup.sh` from the `brand` directory
 7. Compile Redis and BRAND nodes (run `make` from the `brand` directory)
