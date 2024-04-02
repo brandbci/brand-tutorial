@@ -6,3 +6,6 @@ data/
 
 # Git
 git_hash.o
+
+# Python
+.ipynb_checkpoints/
