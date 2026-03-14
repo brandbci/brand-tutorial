@@ -19,7 +19,7 @@ CYTHON_TARGET=$(PROJECT).c
 all:
 	cp $(PROJECT).py $(PROJECT).pyx
 	cython -3 --embed $(PROJECT).pyx -o $(CYTHON_TARGET)
-	gcc $(CYTHON_TARGET) -o $(TARGET) -I $(INCPYTHON) -L $(LIBPYTHON)  -Wl,-rpath=$(LIBPYTHON) -l$(PYTHON_LIB) -lpthread -lm -lutil -ldl
+	gcc $(CYTHON_TARGET) -o $(TARGET) -I $(INCPYTHON) -L $(LIBPYTHON)  $(RPATH_PREFIX)$(LIBPYTHON) -l$(PYTHON_LIB) -lpthread -lm -lutil -ldl
 	$(RM) $(PROJECT).pyx $(CYTHON_TARGET) 
 clean:
 	$(RM) $(CYTHON_TARGET) $(PROJECT).pyx

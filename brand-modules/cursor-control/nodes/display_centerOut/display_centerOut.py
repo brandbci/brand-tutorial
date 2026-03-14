@@ -23,7 +23,8 @@ STATE_BETWEEN_TRIALS = 0
 STATE_START_TRIAL = 1
 STATE_MOVEMENT = 2
 
-if "DISPLAY" not in os.environ:
+import platform
+if platform.system() != 'Darwin' and "DISPLAY" not in os.environ:
     try:
         with open(os.path.join(os.path.expanduser('~'), '.DISPLAY'), 'r') as f:
             os.environ["DISPLAY"] = f.read().splitlines()[0]
@@ -58,8 +59,8 @@ class PygletDisplay(BRANDNode):
 
         # create sprites
         self.batch = pyglet.graphics.Batch()
-        self.background = pyglet.graphics.OrderedGroup(0)
-        self.foreground = pyglet.graphics.OrderedGroup(1)
+        self.background = pyglet.graphics.Group(order=0)
+        self.foreground = pyglet.graphics.Group(order=1)
 
         # target
         self.target = pyglet.shapes.Circle(x=0,

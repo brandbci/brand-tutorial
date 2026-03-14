@@ -18,10 +18,10 @@ nodes:
       sync_key: sync
       time_key: ts
       # window dimensions
-      window_width: 1920
-      window_height: 1080
+      window_width: 800
+      window_height: 800
       # whether to make the game fullscreen
-      fullscreen: true
+      fullscreen: false
       # whether to have syncbox
       syncbox: false
 
